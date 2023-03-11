@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "create": "node packages/cli/bin/vue.js"
+  },
+  "devDependencies": {
+    "lerna": "^6.5.1"
+  }
+}
