@@ -8,7 +8,6 @@ class PromptModuleApi {
   }
 
   injectPrompt(prompt) {
-    console.log("prompt: ", prompt);
     this.creator.injectedPrompts.push(prompt);
   }
 
@@ -18,4 +17,4 @@ class PromptModuleApi {
   }
 }
 
-module.exports = PromptModuleApi;
+export default PromptModuleApi;

@@ -1,9 +1,7 @@
 "use strict";
 
-module.exports = cliSharedUtils;
-
-function cliSharedUtils() {
-  return "Hello from cliSharedUtils";
-}
-
-export { cliSharedUtils };
+import chalk from "chalk";
+const cliSharedUtils = {
+  chalk,
+};
+export { cliSharedUtils, chalk };

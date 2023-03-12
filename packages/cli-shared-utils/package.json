@@ -9,6 +9,7 @@
   "directories": {
     "lib": "lib"
   },
+  "type": "module",
   "files": [
     "lib"
   ],

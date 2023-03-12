@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const cliSharedUtils = require('cli-shared-utils');
+const {cliSharedUtils} = require('cli-shared-utils');
 
 // TODO: DEMONSTRATE API
 ```

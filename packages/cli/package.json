@@ -6,6 +6,7 @@
   "homepage": "https://github.com/wanglinglei/vue-cli#readme",
   "license": "ISC",
   "main": "bin/vue.js",
+  "type": "module",
   "bin": {
     "vue-cli": "bin/vue.js"
   },
@@ -29,6 +30,7 @@
     "globby": "^13.1.3",
     "inquirer": "8.0.0",
     "isbinaryfile": "^5.0.0",
+    "lodash": "^4.17.21",
     "ora": "^6.1.2"
   }
 }

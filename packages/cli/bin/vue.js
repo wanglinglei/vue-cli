@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
-const program = require("commander");
+// const program = require("commander");
+import { program } from "commander";
 program
   .version(`vue-cli 0.0.0`) // 指定版本号
   .usage("<command> [options]"); // 指定使用方式命令 参数
@@ -10,7 +11,10 @@ program
   .description("create a new project by vue-cli")
   .action((appName) => {
     // get app name
-    require("../lib/create")(appName);
+    // require("../lib/create")(appName);
+    import("../lib/create.js").then(({ createApi: create }) => {
+      create(appName);
+    });
   });
 
 program.parse(process.argv);

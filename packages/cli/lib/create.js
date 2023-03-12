@@ -1,6 +1,6 @@
-const path = require("path");
-const { getPromptModules } = require("./utils");
-const Creator = require("./ctrator");
+import path from "path";
+import { getPromptModules } from "./utils.js";
+import { Creator } from "./creator.js";
 /**
  * @description:
  * @param {*} projectName
@@ -14,14 +14,14 @@ async function create(projectName) {
   const targetDir = path.resolve(cwd, name);
   console.log("targetDir", targetDir);
   // 获取选项模块
-  let promptModules = getPromptModules();
-
+  let promptModules = await getPromptModules();
   const creator = new Creator(name, targetDir, promptModules);
   creator.create();
 }
 
-module.exports = (...args) => {
+const createApi = (...args) => {
   return create(...args).catch((err) => {
     console.log("project-create error", err);
   });
 };
+export { createApi };

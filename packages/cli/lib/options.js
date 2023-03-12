@@ -1,4 +1,4 @@
-exports.defaultPreset = {
+const defaultPreset = {
   useConfigFiles: false, // 是否把babel eslint postcss 这些包对应的配置项放在单独的文件
   cssPreprocessor: undefined, // 默认没有配置css 预处理器
   plugins: {
@@ -10,8 +10,8 @@ exports.defaultPreset = {
     },
   },
 };
-
-exports.defaults = {
-  default: Object.assign({ vueVersion: "2" }, exports.defaultPreset),
-  _default_vue3: Object.assign({ vueVersion: "3" }, exports.defaultPreset),
+const defaults = {
+  default: Object.assign({ vueVersion: "2" }, defaultPreset),
+  _default_vue3: Object.assign({ vueVersion: "3" }, defaultPreset),
 };
+export { defaults };

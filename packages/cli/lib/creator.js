@@ -1,7 +1,12 @@
-const { defaults } = require("./options");
-const inquirer = require("inquirer");
+import inquirer from "inquirer";
+import cloneDeep from "lodash/cloneDeep.js";
+
+import { defaults } from "./options.js";
+import PromptModuleApi from "./promptModuleApi.js";
+import { writeFileTree } from "./utils.js";
+import { chalk } from "cli-shared-utils";
+
 const isManualMode = (answers) => answers.preset === "_manual_";
-const PromptModuleApi = require("./promptModuleApi");
 
 class Creator {
   constructor(name, context, promptModules) {
@@ -21,8 +26,51 @@ class Creator {
     });
   }
   async create() {
-    let preset = await this.promptAndResolvePresets();
-    console.log("Creator-create------", preset);
+    const { name, context } = this;
+    let answers = await this.promptAndResolvePresets();
+    let preset;
+    if (answers.preset && answers.preset !== "_manual_") {
+      // 默认配置
+      preset = await this.resolvePreset(answers.preset);
+    } else {
+      // 选择手动配置  插件配置为空 根据选择结果插入
+      preset = {
+        plugins: {},
+      };
+      answers.feature = answers.feature || [];
+      this.promptCompleteCallbacks.forEach((callback) => {
+        callback(answers, preset);
+      });
+    }
+
+    preset = cloneDeep(preset);
+    console.log("Creator-create------", answers, preset);
+    // 添加核心模块
+    preset.plugins["@vue/cli-service"] = Object.assign(
+      { projectName: name },
+      preset
+    );
+    //@note 生成语句提示
+    console.log(`😶 Create project in ${chalk.yellow(context)}.`);
+    // 生成项目package.json
+    const pkg = {
+      name,
+      version: "0.1.0",
+      private: true,
+      devDependencies: {},
+    };
+    const deps = Object.keys(preset.plugins);
+    deps.forEach((dep) => {
+      pkg.devDependencies[dep] = "latest";
+    });
+    await writeFileTree(context, {
+      "package.json": JSON.stringify(pkg, null, 2),
+    });
+
+    return preset;
+  }
+  resolvePreset(preset) {
+    return this.getPresets()[preset];
   }
   async promptAndResolvePresets() {
     const finalPrompts = this.resolveFinalPrompts();
@@ -87,4 +135,4 @@ class Creator {
   }
 }
 
-module.exports = Creator;
+export { Creator };

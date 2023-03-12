@@ -1,4 +1,4 @@
-module.exports = (file) => {
+export default (file) => {
   file.injectFeature({
     name: "choose vue version/选择vue版本号",
     value: "vueVersion",
@@ -27,7 +27,7 @@ module.exports = (file) => {
       },
     ],
   });
-  // 选择完毕的回调
+  // 选择完毕的回调 根据选择插入对应插件配置
   file.onPromptComplete((answers, options) => {
     if (answers.vueVersion) {
       options.vueVersion = answers.vueVersion;
