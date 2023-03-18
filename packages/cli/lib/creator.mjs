@@ -1,10 +1,11 @@
 import inquirer from "inquirer";
 import cloneDeep from "lodash/cloneDeep.js";
 
-import { defaults } from "./options.js";
-import PromptModuleApi from "./promptModuleApi.js";
-import { writeFileTree } from "./utils.js";
-import { chalk } from "cli-shared-utils";
+import { defaults } from "./options.mjs";
+import PromptModuleApi from "./promptModuleApi.mjs";
+import { writeFileTree } from "./utils.mjs";
+import { chalk, execa, loadModule } from "cli-shared-utils";
+import { Generator } from "./generator.mjs";
 
 const isManualMode = (answers) => answers.preset === "_manual_";
 
@@ -66,8 +67,29 @@ class Creator {
     await writeFileTree(context, {
       "package.json": JSON.stringify(pkg, null, 2),
     });
-
+    console.log("🐟 Initializing git repository ...");
+    await this.run("git init"); // 初始化仓库
+    console.log("🐝 Installing CLI plugins. this might take a while...");
+    await this.run("npm install"); //安装依赖
+    console.log("🚀 Invoking generator ...");
+    const plugins = await this.resolvePlugins(preset.plugins);
+    // 创建生成器
+    const generator = new Generator(context, { pkg, plugins });
+    generator.generator();
     return preset;
+  }
+  async resolvePlugins(rawPlugins) {
+    const plugins = [];
+    for (const id of Object.keys(rawPlugins)) {
+      const apply = loadModule(`${id}/generator`, this.context);
+      let options = rawPlugins[id];
+      // @note id：插件名称 apply 插件里导出的函数 options 插件的配置项
+      plugins.push({ id, apply, options });
+    }
+  }
+  run(command, args) {
+    // 在context 目录下执行命令
+    return execa(command, args, { cwd: this.context });
   }
   resolvePreset(preset) {
     return this.getPresets()[preset];

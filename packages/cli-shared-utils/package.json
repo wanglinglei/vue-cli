@@ -5,7 +5,7 @@
   "author": "wanglinglei <18627024279@163.com>",
   "homepage": "https://github.com/wanglinglei/vue-cli#readme",
   "license": "ISC",
-  "main": "lib/cli-shared-utils.js",
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib"
   },

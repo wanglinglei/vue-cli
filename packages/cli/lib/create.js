@@ -1,6 +1,6 @@
 import path from "path";
-import { getPromptModules } from "./utils.js";
-import { Creator } from "./creator.js";
+import { getPromptModules } from "./utils.mjs";
+import { Creator } from "./creator.mjs";
 /**
  * @description:
  * @param {*} projectName
